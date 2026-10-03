@@ -1,16 +1,89 @@
-# React + Vite
+# Chamaki Helpdesk
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sistema de helpdesk para abertura e gerenciamento de chamados técnicos. Permite que clientes abram chamados e técnicos os gerenciem, com autenticação JWT, upload de anexos e relatórios.
 
-Currently, two official plugins are available:
+## Stack Tecnológica
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Frontend:** React 19, React Router, Axios, Vite
+- **Backend:** Express 5, Prisma ORM, JWT, bcrypt, multer
+- **Banco de Dados:** PostgreSQL
 
-## React Compiler
+## Pré-requisitos
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js 18+
+- PostgreSQL 14+
 
-## Expanding the ESLint configuration
+## Instalação e execução
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Backend
+
+```bash
+cd backend
+npm install
+```
+
+Crie um arquivo `.env` na pasta `backend/` com:
+
+```
+DATABASE_URL="postgresql://usuario:senha@localhost:5432/chamaki"
+JWT_SECRET=sua-chave-secreta-aqui
+```
+
+Execute as migrations e inicie o servidor:
+
+```bash
+npx prisma migrate dev
+npm run dev
+```
+
+O servidor roda em `http://localhost:3000`.
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+```
+
+Opcionalmente, crie um arquivo `.env` na pasta `frontend/`:
+
+```
+VITE_API_URL=http://localhost:3000/api
+```
+
+Inicie o servidor de desenvolvimento:
+
+```bash
+npm run dev
+```
+
+## Variáveis de Ambiente
+
+| Variável | Local | Descrição |
+|---|---|---|
+| `DATABASE_URL` | backend/.env | URL de conexão com o PostgreSQL |
+| `JWT_SECRET` | backend/.env | Chave secreta para assinatura dos tokens JWT |
+| `VITE_API_URL` | frontend/.env | URL base da API (padrão: http://localhost:3000/api) |
+
+## Estrutura de Pastas
+
+```
+ChamakiHelpdesk/
+├── backend/
+│   ├── prisma/           # Schema e migrations do banco
+│   ├── src/
+│   │   ├── lib/          # PrismaClient centralizado
+│   │   ├── middleware/    # Auth JWT, upload multer
+│   │   ├── routes/       # Rotas de usuário e tickets
+│   │   └── server.js     # Entrada do servidor Express
+│   └── uploads/          # Arquivos anexados aos chamados
+├── frontend/
+│   ├── public/           # Ícones e assets estáticos
+│   └── src/
+│       ├── assets/       # Imagens e logos
+│       ├── components/   # Sidebar, Toast, ProtectedRoute, etc.
+│       ├── pages/        # Páginas da aplicação
+│       ├── services/     # Instância centralizada do axios
+│       └── utils/        # Máscaras de input (CPF, telefone)
+└── README.md
+```
