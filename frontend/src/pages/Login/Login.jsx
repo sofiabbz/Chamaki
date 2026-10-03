@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo-chamaki.png";
 import estrela from "../../assets/estrela.png";
@@ -13,13 +13,29 @@ function Login() {
     password: "",
   });
 
+  const [remember, setRemember] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("rememberedEmail");
+    if (savedEmail) {
+      setFormData((prev) => ({ ...prev, email: savedEmail }));
+      setRemember(true);
+    }
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleLogin = async () => {
+    setError("");
+
+    if (!formData.email || !formData.password) {
+      setError("Preencha e-mail e senha!");
+      return;
+    }
+
     try {
       const response = await api.post("/users/login", {
         email: formData.email,
@@ -30,6 +46,12 @@ function Login() {
 
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
+
+      if (remember) {
+        localStorage.setItem("rememberedEmail", formData.email);
+      } else {
+        localStorage.removeItem("rememberedEmail");
+      }
 
       if (user.role === "tech") {
         navigate("/dashboard-tecnico");
@@ -78,11 +100,16 @@ function Login() {
           className="login-input"
           value={formData.password}
           onChange={handleChange}
+          onKeyDown={(e) => e.key === "Enter" && handleLogin()}
         />
 
         <div className="login-options">
           <label className="login-remember">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              checked={remember}
+              onChange={(e) => setRemember(e.target.checked)}
+            />
             Lembrar de mim
           </label>
           <span className="login-forgot-disabled">Esqueceu sua senha? (Em breve)</span>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import estrela from "../../assets/estrela.png";
 import PasswordStrength from "../../components/PasswordStrength/PasswordStrength";
+import Toast from "../../components/Toast/Toast";
 import api from "../../services/api";
 import "./Register.css";
 import { maskCPF, maskPhone } from "../../utils/masks";
@@ -17,9 +18,11 @@ function Register() {
     password: "",
     confirmPassword: "",
     role: "client",
+    techKey: "",
   });
 
   const [error, setError] = useState("");
+  const [toast, setToast] = useState(null);
 
   const handleChange = (e) => {
     let { name, value } = e.target;
@@ -59,17 +62,32 @@ function Register() {
       return;
     }
 
+    if (formData.role === "tech" && !formData.techKey) {
+      setError("Informe a chave de acesso para cadastro de técnico!");
+      return;
+    }
+
     try {
-      await api.post("/users/cadastro", {
+      const payload = {
         name: formData.name,
         email: formData.email,
         cpf: formData.cpf,
         phone: formData.phone,
         password: formData.password,
         role: formData.role,
-      });
+      };
 
-      navigate("/login");
+      if (formData.role === "tech") {
+        payload.techKey = formData.techKey;
+      }
+
+      await api.post("/users/cadastro", payload);
+
+      setToast({ message: "Sucesso! Conta criada com sucesso.", type: "success" });
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 2500);
     } catch (err) {
       setError(err.response?.data?.error || "Erro ao cadastrar. E-mail ou CPF já cadastrado.");
     }
@@ -79,6 +97,14 @@ function Register() {
     <div className="register-page">
       <div className="register-container">
         <img src={estrela} alt="" className="register-star" />
+
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
+          />
+        )}
 
         <h2 className="register-title">Área de Cadastro</h2>
         <div className="register-divider"></div>
@@ -165,6 +191,20 @@ function Register() {
               <option value="tech">Técnico</option>
             </select>
           </div>
+
+          {formData.role === "tech" && (
+            <div>
+              <label className="register-label">Chave de Acesso (Técnico) *</label>
+              <input
+                type="password"
+                name="techKey"
+                className="register-input"
+                placeholder="Informe a chave fornecida pela empresa"
+                value={formData.techKey}
+                onChange={handleChange}
+              />
+            </div>
+          )}
         </div>
 
         <button className="register-btn" onClick={handleSubmit}>

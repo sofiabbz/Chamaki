@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post("/cadastro", async (req, res) => {
   try {
-    const { name, email, cpf, phone, password, role } = req.body;
+    const { name, email, cpf, phone, password, role, techKey } = req.body;
 
     if (!name || !email || !cpf || !password) {
       return res.status(400).json({ error: "Preencha todos os campos obrigatórios" });
@@ -21,6 +21,12 @@ router.post("/cadastro", async (req, res) => {
 
     if (password.length < 8) {
       return res.status(400).json({ error: "A senha deve ter pelo menos 8 caracteres" });
+    }
+
+    if (role === "tech") {
+      if (!techKey || techKey !== process.env.TECH_ACCESS_KEY) {
+        return res.status(403).json({ error: "Chave de acesso inválida para cadastro de técnico" });
+      }
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
