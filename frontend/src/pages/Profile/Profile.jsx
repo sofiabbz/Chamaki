@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Toast from "../../components/Toast/Toast";
-import axios from "axios";
+import api from "../../services/api";
 import "./Profile.css";
 
 function Profile() {
@@ -31,7 +31,7 @@ function Profile() {
 
   const handleSave = async () => {
     try {
-      const response = await axios.put(`http://localhost:3000/api/users/${user.id}`, {
+      await api.put(`/users/${user.id}`, {
         name: formData.name,
         phone: formData.phone,
       });

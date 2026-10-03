@@ -1,19 +1,24 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import axios from "axios";
+import api from "../../services/api";
 import "./TechDashboard.css";
 
 function TechDashboard() {
   const navigate = useNavigate();
   const [tickets, setTickets] = useState([]);
+  const [search, setSearch] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
+  const [filterCategory, setFilterCategory] = useState("");
+  const [filterPriority, setFilterPriority] = useState("");
+  const [page, setPage] = useState(1);
+  const perPage = 10;
 
   useEffect(() => {
     const fetchTickets = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/tickets");
+        const response = await api.get("/tickets");
         setTickets(response.data);
-        // Técnico vê TODOS os chamados, não filtra
       } catch (err) {
         console.log("Erro ao buscar chamados");
       }
@@ -21,6 +26,21 @@ function TechDashboard() {
 
     fetchTickets();
   }, []);
+
+  const filtered = tickets.filter((t) => {
+    if (search && !t.title.toLowerCase().includes(search.toLowerCase())) return false;
+    if (filterStatus && t.status !== filterStatus) return false;
+    if (filterCategory && t.category !== filterCategory) return false;
+    if (filterPriority && t.priority !== filterPriority) return false;
+    return true;
+  });
+
+  const totalPages = Math.ceil(filtered.length / perPage);
+  const paginated = filtered.slice((page - 1) * perPage, page * perPage);
+
+  useEffect(() => {
+    setPage(1);
+  }, [search, filterStatus, filterCategory, filterPriority]);
 
   const counters = {
     total: tickets.length,
@@ -30,7 +50,6 @@ function TechDashboard() {
     criticos: tickets.filter((t) => t.priority === "Crítica").length,
   };
 
-  // Conta por status
   const statusData = {
     aberto: tickets.filter((t) => t.status === "Aberto").length,
     andamento: tickets.filter((t) => t.status === "Em andamento").length,
@@ -38,7 +57,6 @@ function TechDashboard() {
     fechado: tickets.filter((t) => t.status === "Fechado").length,
   };
 
-  // Conta por categoria
   const categoryData = {
     hardware: tickets.filter((t) => t.category === "Hardware").length,
     software: tickets.filter((t) => t.category === "Software").length,
@@ -46,7 +64,6 @@ function TechDashboard() {
     acesso: tickets.filter((t) => t.category === "Acesso / Permissões").length,
   };
 
-  // Conta por prioridade
   const priorityData = {
     critica: tickets.filter((t) => t.priority === "Crítica").length,
     alta: tickets.filter((t) => t.priority === "Alta").length,
@@ -54,7 +71,6 @@ function TechDashboard() {
     baixa: tickets.filter((t) => t.priority === "Baixa").length,
   };
 
-  // Calcula porcentagem pra largura das barras
   const maxStatus = Math.max(...Object.values(statusData), 1);
   const maxCategory = Math.max(...Object.values(categoryData), 1);
 
@@ -74,7 +90,6 @@ function TechDashboard() {
           </div>
         </div>
 
-        {/* 5 Contadores */}
         <div className="tech-counters">
           <div className="tech-counter">
             <span className="tech-counter-number blue">{counters.total}</span>
@@ -98,9 +113,7 @@ function TechDashboard() {
           </div>
         </div>
 
-        {/* 3 Gráficos */}
         <div className="tech-charts">
-          {/* Por Status */}
           <div className="tech-chart-card">
             <h3 className="tech-chart-title">Por status</h3>
             <div className="chart-bar-group">
@@ -131,7 +144,6 @@ function TechDashboard() {
             </div>
           </div>
 
-          {/* Por Categoria */}
           <div className="tech-chart-card">
             <h3 className="tech-chart-title">Por categoria</h3>
             <div className="chart-bar-group">
@@ -162,7 +174,6 @@ function TechDashboard() {
             </div>
           </div>
 
-          {/* Por Prioridade */}
           <div className="tech-chart-card">
             <h3 className="tech-chart-title">Por prioridade</h3>
             <div className="chart-circles">
@@ -194,9 +205,39 @@ function TechDashboard() {
           </div>
         </div>
 
-        {/* Tabela de chamados recentes */}
         <div className="tech-table-container">
           <h3 className="tech-table-title">CHAMADOS RECENTES</h3>
+
+          <div className="filter-bar">
+            <input
+              type="text"
+              className="filter-input"
+              placeholder="Buscar por título..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <select className="filter-select" value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
+              <option value="">Todos os status</option>
+              <option value="Aberto">Aberto</option>
+              <option value="Em andamento">Em andamento</option>
+              <option value="Resolvido">Resolvido</option>
+              <option value="Fechado">Fechado</option>
+            </select>
+            <select className="filter-select" value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}>
+              <option value="">Todas as categorias</option>
+              <option value="Hardware">Hardware</option>
+              <option value="Software">Software</option>
+              <option value="Rede">Rede</option>
+              <option value="Acesso / Permissões">Acesso / Permissões</option>
+            </select>
+            <select className="filter-select" value={filterPriority} onChange={(e) => setFilterPriority(e.target.value)}>
+              <option value="">Todas as prioridades</option>
+              <option value="Baixa">Baixa</option>
+              <option value="Média">Média</option>
+              <option value="Alta">Alta</option>
+              <option value="Crítica">Crítica</option>
+            </select>
+          </div>
 
           <div className="tech-table">
             <div className="tech-table-header">
@@ -209,11 +250,11 @@ function TechDashboard() {
               <span>Prioridade</span>
             </div>
 
-            {tickets.length === 0 && (
+            {paginated.length === 0 && (
               <p className="table-empty">Nenhum chamado encontrado.</p>
             )}
 
-            {tickets.map((ticket) => (
+            {paginated.map((ticket) => (
               <div
                 className="tech-table-row"
                 key={ticket.id}
@@ -233,6 +274,28 @@ function TechDashboard() {
               </div>
             ))}
           </div>
+
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button
+                className="pagination-btn"
+                disabled={page === 1}
+                onClick={() => setPage(page - 1)}
+              >
+                Anterior
+              </button>
+              <span className="pagination-info">
+                Página {page} de {totalPages}
+              </span>
+              <button
+                className="pagination-btn"
+                disabled={page === totalPages}
+                onClick={() => setPage(page + 1)}
+              >
+                Próximo
+              </button>
+            </div>
+          )}
         </div>
       </main>
     </div>

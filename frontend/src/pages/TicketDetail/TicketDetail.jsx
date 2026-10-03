@@ -1,17 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import axios from "axios";
+import api from "../../services/api";
 import "./TicketDetail.css";
 import Toast from "../../components/Toast/Toast";
 
 function TicketDetail() {
   const { id } = useParams();
-  // useParams — pega o :id da URL (ex: /chamado/1 → id = 1)
   const [toast, setToast] = useState(null);
   const [ticket, setTicket] = useState(null);
-  // Começa null até carregar do banco
-
   const [newComment, setNewComment] = useState("");
   const [status, setStatus] = useState("");
 
@@ -23,9 +20,7 @@ function TicketDetail() {
 
   const fetchTicket = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:3000/api/tickets/${id}`,
-      );
+      const response = await api.get(`/tickets/${id}`);
       setTicket(response.data);
       setStatus(response.data.status);
     } catch (err) {
@@ -35,14 +30,9 @@ function TicketDetail() {
 
   const handleStatusChange = async (newStatus) => {
     try {
-      await axios.put(`http://localhost:3000/api/tickets/${id}`, {
-        status: newStatus,
-      });
+      await api.put(`/tickets/${id}`, { status: newStatus });
       setStatus(newStatus);
-      setToast({
-        message: `Status alterado para "${newStatus}"`,
-        type: "success",
-      });
+      setToast({ message: `Status alterado para "${newStatus}"`, type: "success" });
     } catch (err) {
       setToast({ message: "Erro ao atualizar status", type: "error" });
     }
@@ -52,10 +42,7 @@ function TicketDetail() {
     if (newComment.trim() === "") return;
 
     try {
-      await axios.post(`http://localhost:3000/api/tickets/${id}/comments`, {
-        text: newComment,
-        userId: user.id,
-      });
+      await api.post(`/tickets/${id}/comments`, { text: newComment });
       setNewComment("");
       fetchTicket();
       setToast({ message: "Comentário adicionado!", type: "success" });
@@ -74,6 +61,8 @@ function TicketDetail() {
     });
   };
 
+  const apiBaseUrl = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+
   if (!ticket) {
     return (
       <div className="ticket-detail">
@@ -91,11 +80,18 @@ function TicketDetail() {
       </div>
     );
   }
-  // Enquanto não carregou, mostra "Carregando..."
 
   return (
     <div className="ticket-detail">
       <Sidebar type={user?.role === "tech" ? "tech" : "client"} />
+
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
 
       <main className="ticket-main">
         <Link
@@ -109,9 +105,7 @@ function TicketDetail() {
         <h1 className="ticket-title">{ticket.title}</h1>
 
         <div className="ticket-badges">
-          <span
-            className={`badge badge-${status.toLowerCase().replace(" ", "-")}`}
-          >
+          <span className={`badge badge-${status.toLowerCase().replace(" ", "-")}`}>
             {status}
           </span>
           <span className="badge badge-alta">{ticket.priority}</span>
@@ -120,7 +114,6 @@ function TicketDetail() {
 
         <div className="ticket-content">
           <div className="ticket-left">
-            {/* Informações */}
             <div className="ticket-card">
               <h3 className="ticket-card-title">INFORMAÇÕES</h3>
               <div className="ticket-info-grid">
@@ -130,35 +123,40 @@ function TicketDetail() {
                 </div>
                 <div>
                   <span className="info-label">E-mail</span>
-                  <span className="info-value">
-                    {ticket.user?.email || "—"}
-                  </span>
+                  <span className="info-value">{ticket.user?.email || "—"}</span>
                 </div>
                 <div>
                   <span className="info-label">Telefone</span>
-                  <span className="info-value">
-                    {ticket.user?.phone || "—"}
-                  </span>
+                  <span className="info-value">{ticket.user?.phone || "—"}</span>
                 </div>
                 <div>
                   <span className="info-label">Data da abertura</span>
-                  <span className="info-value">
-                    {formatDate(ticket.createdAt)}
-                  </span>
+                  <span className="info-value">{formatDate(ticket.createdAt)}</span>
                 </div>
                 <div>
                   <span className="info-label">Última atualização</span>
-                  <span className="info-value">
-                    {formatDate(ticket.updatedAt)}
-                  </span>
+                  <span className="info-value">{formatDate(ticket.updatedAt)}</span>
                 </div>
               </div>
 
               <h3 className="ticket-card-title">DESCRIÇÃO</h3>
               <p className="ticket-description">{ticket.description}</p>
+
+              {ticket.attachment && (
+                <>
+                  <h3 className="ticket-card-title">ANEXO</h3>
+                  <a
+                    href={`${apiBaseUrl}/uploads/${ticket.attachment}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ticket-attachment-link"
+                  >
+                    {ticket.attachment}
+                  </a>
+                </>
+              )}
             </div>
 
-            {/* Comentários */}
             <div className="ticket-card">
               <h3 className="ticket-card-title">Histórico / Comentários</h3>
 
@@ -170,12 +168,8 @@ function TicketDetail() {
                 {ticket.comments?.map((comment) => (
                   <div className="comment-item" key={comment.id}>
                     <div className="comment-header">
-                      <span className="comment-author">
-                        {comment.user?.name}
-                      </span>
-                      <span className="comment-time">
-                        {formatDate(comment.createdAt)}
-                      </span>
+                      <span className="comment-author">{comment.user?.name}</span>
+                      <span className="comment-time">{formatDate(comment.createdAt)}</span>
                     </div>
                     <p className="comment-text">{comment.text}</p>
                   </div>
@@ -199,7 +193,6 @@ function TicketDetail() {
           </div>
 
           <div className="ticket-right">
-            {/* Alterar Status */}
             <div className="ticket-card">
               <h3 className="ticket-card-title">ALTERAR STATUS</h3>
               <div className="status-buttons">
@@ -230,7 +223,6 @@ function TicketDetail() {
               </div>
             </div>
 
-            {/* Detalhes */}
             <div className="ticket-card">
               <h3 className="ticket-card-title">DETALHES</h3>
               <div className="detail-item">
@@ -239,15 +231,11 @@ function TicketDetail() {
               </div>
               <div className="detail-item">
                 <span className="info-label">Prioridade</span>
-                <span className="info-value priority-alta">
-                  {ticket.priority}
-                </span>
+                <span className="info-value priority-alta">{ticket.priority}</span>
               </div>
               <div className="detail-item">
                 <span className="info-label">Criado em</span>
-                <span className="info-value">
-                  {formatDate(ticket.createdAt)}
-                </span>
+                <span className="info-value">{formatDate(ticket.createdAt)}</span>
               </div>
             </div>
           </div>

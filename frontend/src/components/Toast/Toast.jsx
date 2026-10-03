@@ -6,13 +6,13 @@ function Toast({ message, type, onClose }) {
     const timer = setTimeout(() => {
       onClose();
     }, 3000);
-    // Fecha automaticamente depois de 3 segundos
 
     return () => clearTimeout(timer);
   }, []);
 
   return (
     <div className={`toast toast-${type}`}>
+      <span className="toast-icon">{type === "success" ? "✓" : "✕"}</span>
       <span>{message}</span>
       <button className="toast-close" onClick={onClose}>✕</button>
     </div>

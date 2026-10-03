@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import estrela from "../../assets/estrela.png";
 import PasswordStrength from "../../components/PasswordStrength/PasswordStrength";
-import axios from "axios";
+import api from "../../services/api";
 import "./Register.css";
 import { maskCPF, maskPhone } from "../../utils/masks";
 
@@ -43,12 +43,7 @@ function Register() {
   const handleSubmit = async () => {
     setError("");
 
-    if (
-      !formData.name ||
-      !formData.email ||
-      !formData.cpf ||
-      !formData.password
-    ) {
+    if (!formData.name || !formData.email || !formData.cpf || !formData.password) {
       setError("Preencha todos os campos obrigatórios!");
       return;
     }
@@ -65,7 +60,7 @@ function Register() {
     }
 
     try {
-      await axios.post("http://localhost:3000/api/users/cadastro", {
+      await api.post("/users/cadastro", {
         name: formData.name,
         email: formData.email,
         cpf: formData.cpf,
@@ -76,7 +71,7 @@ function Register() {
 
       navigate("/login");
     } catch (err) {
-      setError("Erro ao cadastrar. E-mail ou CPF já cadastrado.");
+      setError(err.response?.data?.error || "Erro ao cadastrar. E-mail ou CPF já cadastrado.");
     }
   };
 

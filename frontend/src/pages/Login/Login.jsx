@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo-chamaki.png";
 import estrela from "../../assets/estrela.png";
-import axios from "axios";
+import api from "../../services/api";
 import "./Login.css";
 
 function Login() {
@@ -21,26 +21,21 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/api/users/login", {
+      const response = await api.post("/users/login", {
         email: formData.email,
         password: formData.password,
       });
-      // Envia email e senha pro backend verificar
 
-      const user = response.data;
-      // response.data — dados do usuário que o backend devolveu
+      const { token, user } = response.data;
 
+      localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
-      // Salva o usuário no localStorage (memória do navegador)
-      // Assim as outras páginas sabem quem tá logado
 
       if (user.role === "tech") {
         navigate("/dashboard-tecnico");
       } else {
         navigate("/dashboard");
       }
-      // Se for técnico, vai pro dashboard do técnico
-      // Se for cliente, vai pro dashboard do cliente
     } catch (err) {
       setError("Email ou senha incorretos!");
     }
@@ -90,19 +85,10 @@ function Login() {
             <input type="checkbox" />
             Lembrar de mim
           </label>
-          <a href="#" className="login-forgot">Esqueceu sua senha?</a>
+          <span className="login-forgot-disabled">Esqueceu sua senha? (Em breve)</span>
         </div>
 
         <button className="login-btn" onClick={handleLogin}>Entrar</button>
-
-        <div className="login-divider-text">
-          <span>OU</span>
-        </div>
-
-        <div className="login-social">
-          <button className="login-social-btn">G</button>
-          <button className="login-social-btn">f</button>
-        </div>
 
         <p className="login-register">
           Ainda não possui uma conta?{" "}

@@ -1,31 +1,22 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import axios from "axios";
+import api from "../../services/api";
 import "./ClientDashboard.css";
 
 function ClientDashboard() {
   const navigate = useNavigate();
-
   const [tickets, setTickets] = useState([]);
-  // Começa vazio, vai buscar do banco
-
-  const user = JSON.parse(localStorage.getItem("user"));
-  // Pega o usuário logado
+  const [search, setSearch] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
+  const [filterCategory, setFilterCategory] = useState("");
+  const [filterPriority, setFilterPriority] = useState("");
 
   useEffect(() => {
-    // useEffect — roda quando a página carrega
     const fetchTickets = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/tickets");
-        // Busca todos os chamados do backend
-
-        const myTickets = response.data.filter(
-          (ticket) => ticket.userId === user.id
-        );
-        // Filtra só os chamados do usuário logado
-
-        setTickets(myTickets);
+        const response = await api.get("/tickets");
+        setTickets(response.data);
       } catch (err) {
         console.log("Erro ao buscar chamados");
       }
@@ -33,18 +24,23 @@ function ClientDashboard() {
 
     fetchTickets();
   }, []);
-  // [] vazio — roda só uma vez quando a página abre
+
+  const filtered = tickets.filter((t) => {
+    if (search && !t.title.toLowerCase().includes(search.toLowerCase())) return false;
+    if (filterStatus && t.status !== filterStatus) return false;
+    if (filterCategory && t.category !== filterCategory) return false;
+    if (filterPriority && t.priority !== filterPriority) return false;
+    return true;
+  });
 
   const counters = {
     abertos: tickets.filter((t) => t.status === "Aberto").length,
     andamento: tickets.filter((t) => t.status === "Em andamento").length,
     resolvidos: tickets.filter((t) => t.status === "Resolvido").length,
   };
-  // Conta quantos chamados tem de cada status
 
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString("pt-BR");
-    // Converte a data do banco pra formato brasileiro (dd/mm/aaaa)
   };
 
   return (
@@ -80,6 +76,37 @@ function ClientDashboard() {
           </div>
         </div>
 
+        <div className="filter-bar">
+          <input
+            type="text"
+            className="filter-input"
+            placeholder="Buscar por título..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <select className="filter-select" value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
+            <option value="">Todos os status</option>
+            <option value="Aberto">Aberto</option>
+            <option value="Em andamento">Em andamento</option>
+            <option value="Resolvido">Resolvido</option>
+            <option value="Fechado">Fechado</option>
+          </select>
+          <select className="filter-select" value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}>
+            <option value="">Todas as categorias</option>
+            <option value="Hardware">Hardware</option>
+            <option value="Software">Software</option>
+            <option value="Rede">Rede</option>
+            <option value="Acesso / Permissões">Acesso / Permissões</option>
+          </select>
+          <select className="filter-select" value={filterPriority} onChange={(e) => setFilterPriority(e.target.value)}>
+            <option value="">Todas as prioridades</option>
+            <option value="Baixa">Baixa</option>
+            <option value="Média">Média</option>
+            <option value="Alta">Alta</option>
+            <option value="Crítica">Crítica</option>
+          </select>
+        </div>
+
         <div className="client-table">
           <div className="table-header">
             <span>ID</span>
@@ -90,11 +117,11 @@ function ClientDashboard() {
             <span>Prioridade</span>
           </div>
 
-          {tickets.length === 0 && (
+          {filtered.length === 0 && (
             <p className="table-empty">Nenhum chamado encontrado.</p>
           )}
 
-          {tickets.map((ticket) => (
+          {filtered.map((ticket) => (
             <div
               className="table-row"
               key={ticket.id}
