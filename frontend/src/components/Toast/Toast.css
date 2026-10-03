@@ -36,6 +36,11 @@
   border: 1px solid #EF4444;
 }
 
+.toast-icon {
+  font-size: 16px;
+  font-weight: 700;
+}
+
 .toast-close {
   background: none;
   border: none;

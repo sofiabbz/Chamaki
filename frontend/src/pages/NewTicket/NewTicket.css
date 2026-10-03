@@ -158,3 +158,20 @@
   font-size: 14px;
   margin-top: 16px;
 }
+
+.upload-file-name {
+  color: #10B981;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .new-ticket-main {
+    margin-left: 0;
+    padding: 16px;
+    padding-top: 60px;
+  }
+
+  .new-ticket-grid {
+    grid-template-columns: 1fr;
+  }
+}

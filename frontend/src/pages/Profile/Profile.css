@@ -93,3 +93,15 @@
 .profile-btn:hover {
   background-color: #7a2002;
 }
+
+@media (max-width: 768px) {
+  .profile-main {
+    margin-left: 0;
+    padding: 16px;
+    padding-top: 60px;
+  }
+
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+}

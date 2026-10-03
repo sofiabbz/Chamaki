@@ -1,12 +1,13 @@
 const express = require("express");
 const prisma = require("../lib/prisma");
 const authMiddleware = require("../middleware/authMiddleware");
+const upload = require("../middleware/upload");
 
 const router = express.Router();
 
 router.use(authMiddleware);
 
-router.post("/", async (req, res) => {
+router.post("/", upload.single("attachment"), async (req, res) => {
   try {
     const { title, description, category, priority } = req.body;
 
@@ -14,9 +15,12 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ error: "Preencha todos os campos obrigatórios" });
     }
 
-    const ticket = await prisma.ticket.create({
-      data: { title, description, category, priority, userId: req.user.id },
-    });
+    const data = { title, description, category, priority, userId: req.user.id };
+    if (req.file) {
+      data.attachment = req.file.filename;
+    }
+
+    const ticket = await prisma.ticket.create({ data });
 
     res.status(201).json(ticket);
   } catch (error) {

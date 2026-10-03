@@ -27,6 +27,7 @@ model Ticket {
   category    String
   priority    String
   status      String    @default("Aberto")
+  attachment  String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   userId      Int

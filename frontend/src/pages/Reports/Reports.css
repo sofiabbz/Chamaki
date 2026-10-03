@@ -23,31 +23,116 @@
   margin-bottom: 24px;
 }
 
-.reports-card {
+.reports-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.reports-stat-card {
   background-color: #20304C;
-  border-radius: 10px;
-  padding: 60px;
-  max-width: 600px;
+  border-radius: 8px;
+  padding: 20px;
 }
 
-.reports-coming-soon {
-  text-align: center;
-}
-
-.reports-icon {
-  font-size: 48px;
+.reports-stat-number {
+  font-size: 28px;
+  font-weight: 700;
   display: block;
+}
+
+.reports-stat-number.blue { color: #3B82F6; }
+.reports-stat-number.yellow { color: #F59E0B; }
+.reports-stat-number.green { color: #10B981; }
+.reports-stat-number.pink { color: #EC4899; }
+
+.reports-stat-label {
+  font-size: 13px;
+  color: #94A3B8;
+  margin-top: 4px;
+}
+
+.reports-charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.reports-chart-card {
+  background-color: #20304C;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.reports-chart-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #FFFFFF;
   margin-bottom: 16px;
 }
 
-.reports-coming-soon h2 {
-  font-size: 20px;
-  color: #FFFFFF;
-  margin-bottom: 12px;
+.chart-bar-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.reports-coming-soon p {
+.chart-bar-count {
+  font-size: 12px;
+  color: #94A3B8;
+  font-weight: 600;
+}
+
+.reports-summary {
+  background-color: #20304C;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.reports-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.reports-summary-item {
+  background-color: #0A1628;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.reports-summary-label {
   font-size: 14px;
   color: #94A3B8;
-  line-height: 1.6;
+}
+
+.reports-summary-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+@media (max-width: 768px) {
+  .reports-main {
+    margin-left: 0;
+    padding: 16px;
+    padding-top: 60px;
+  }
+
+  .reports-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .reports-charts {
+    grid-template-columns: 1fr;
+  }
+
+  .reports-summary-grid {
+    grid-template-columns: 1fr;
+  }
 }
