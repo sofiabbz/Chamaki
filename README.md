@@ -101,4 +101,4 @@ ChamakiHelpdesk/
 
 ## Licença
 
-Este projeto é de uso acadêmico/educacional.
+Este projeto é de uso pessoal.
