@@ -1,6 +1,6 @@
 .reports-page {
   display: flex;
-  background-color: #0A1628;
+  background-color: var(--bg-page);
   min-height: 100vh;
 }
 
@@ -31,7 +31,7 @@
 }
 
 .reports-stat-card {
-  background-color: #20304C;
+  background-color: var(--bg-card);
   border-radius: 8px;
   padding: 20px;
 }
@@ -61,7 +61,7 @@
 }
 
 .reports-chart-card {
-  background-color: #20304C;
+  background-color: var(--bg-card);
   border-radius: 8px;
   padding: 20px;
 }
@@ -86,7 +86,7 @@
 }
 
 .reports-summary {
-  background-color: #20304C;
+  background-color: var(--bg-card);
   border-radius: 8px;
   padding: 20px;
 }

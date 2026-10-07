@@ -1,7 +1,6 @@
-/* Layout geral */
 .tech-dashboard {
   display: flex;
-  background-color: #0A1628;
+  background-color: var(--bg-page);
   min-height: 100vh;
 }
 
@@ -37,10 +36,17 @@
 }
 
 .tech-counter {
-  background-color: #20304C;
+  background-color: #1A2744;
   border-radius: 8px;
   padding: 18px;
+  border-top: 3px solid transparent;
 }
+
+.tech-counter:nth-child(1) { border-top-color: #3B82F6; }
+.tech-counter:nth-child(2) { border-top-color: #EC4899; }
+.tech-counter:nth-child(3) { border-top-color: #10B981; }
+.tech-counter:nth-child(4) { border-top-color: #F59E0B; }
+.tech-counter:nth-child(5) { border-top-color: #EF4444; }
 
 .tech-counter-number {
   font-size: 28px;
@@ -69,7 +75,7 @@
 }
 
 .tech-chart-card {
-  background-color: #20304C;
+  background-color: var(--bg-card);
   border-radius: 8px;
   padding: 20px;
 }
@@ -159,7 +165,7 @@
 
 /* Tabela de chamados */
 .tech-table-container {
-  background-color: #20304C;
+  background-color: var(--bg-card);
   border-radius: 8px;
   overflow: hidden;
 }

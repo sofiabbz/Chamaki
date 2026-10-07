@@ -1,7 +1,7 @@
 /* Seção hero inteira */
 
 .hero {
-  background-color: #000e26;
+  background-color: var(--bg-body);
   padding: 250px 60px 60px;
   /* 120px no topo pra não ficar atrás do navbar fixo */
 
@@ -16,7 +16,7 @@
 
 /* Lado esquerdo — card com logo e frase */
 .hero-content {
-  background-color: #992802;
+  background-color: var(--color-primary);
   border-radius: 16px;
   padding: 40px;
   width: 400px;
@@ -77,7 +77,7 @@
 
 /* Botão Solicitar Suporte */
 .hero-btn {
-  background-color: #20304C;
+  background-color: var(--bg-card);
   color: #FFFFFF;
   border: none;
   padding: 16px 40px;

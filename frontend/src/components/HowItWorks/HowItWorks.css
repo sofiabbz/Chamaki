@@ -2,7 +2,7 @@
 .how-it-works {
   position: relative;
   overflow: hidden;
-  background-color: #992802;
+  background-color: var(--color-primary);
   padding: 60px;
   border-radius: 20px;
   margin: 0 40px;
@@ -28,7 +28,7 @@
 
 /* Cada card de passo */
 .how-step {
-  background-color: #20304C;
+  background-color: var(--bg-card);
   border-radius: 12px;
   padding: 30px;
   width: 260px;

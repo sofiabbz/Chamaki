@@ -1,7 +1,6 @@
-/* Layout geral */
 .ticket-detail {
   display: flex;
-  background-color: #0A1628;
+  background-color: var(--bg-page);
   min-height: 100vh;
 }
 
@@ -21,7 +20,7 @@
 }
 
 .ticket-back span {
-  color: #992802;
+  color: var(--color-primary);
 }
 
 .ticket-back:hover span {
@@ -91,7 +90,7 @@
 
 /* Cards */
 .ticket-card {
-  background-color: #20304C;
+  background-color: var(--bg-card);
   border-radius: 10px;
   padding: 20px;
 }
@@ -209,22 +208,22 @@
 }
 
 .comment-input:focus {
-  border-color: #992802;
+  border-color: var(--color-primary);
 }
 
 .comment-send {
   padding: 12px 20px;
-  background-color: #992802;
+  background-color: var(--color-primary);
   border: none;
   border-radius: 6px;
-  color: #FFFFFF;
+  color: var(--text-primary);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
 }
 
 .comment-send:hover {
-  background-color: #7a2002;
+  background-color: var(--color-primary-hover);
 }
 
 /* Botões de status */
@@ -257,6 +256,59 @@
 
 .status-btn.active:hover {
   background-color: #F59E0B;
+}
+
+/* Botões de prioridade */
+.priority-btn {
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  background-color: #0A1628;
+  color: #94A3B8;
+}
+
+.priority-btn:hover {
+  background-color: #1a2d4a;
+}
+
+.priority-btn.active-baixa {
+  background-color: #10B981;
+  color: #000000;
+}
+
+.priority-btn.active-baixa:hover {
+  background-color: #10B981;
+}
+
+.priority-btn.active-media {
+  background-color: #3B82F6;
+  color: #FFFFFF;
+}
+
+.priority-btn.active-media:hover {
+  background-color: #3B82F6;
+}
+
+.priority-btn.active-alta {
+  background-color: #F59E0B;
+  color: #000000;
+}
+
+.priority-btn.active-alta:hover {
+  background-color: #F59E0B;
+}
+
+.priority-btn.active-critica {
+  background-color: #EF4444;
+  color: #FFFFFF;
+}
+
+.priority-btn.active-critica:hover {
+  background-color: #EF4444;
 }
 
 /* Detalhes */

@@ -11,6 +11,7 @@ function TicketDetail() {
   const [ticket, setTicket] = useState(null);
   const [newComment, setNewComment] = useState("");
   const [status, setStatus] = useState("");
+  const [priority, setPriority] = useState("");
 
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -23,6 +24,7 @@ function TicketDetail() {
       const response = await api.get(`/tickets/${id}`);
       setTicket(response.data);
       setStatus(response.data.status);
+      setPriority(response.data.priority);
     } catch (err) {
       console.log("Erro ao buscar chamado");
     }
@@ -35,6 +37,16 @@ function TicketDetail() {
       setToast({ message: `Status alterado para "${newStatus}"`, type: "success" });
     } catch (err) {
       setToast({ message: "Erro ao atualizar status", type: "error" });
+    }
+  };
+
+  const handlePriorityChange = async (newPriority) => {
+    try {
+      await api.put(`/tickets/${id}`, { priority: newPriority });
+      setPriority(newPriority);
+      setToast({ message: `Prioridade alterada para "${newPriority}"`, type: "success" });
+    } catch (err) {
+      setToast({ message: "Erro ao atualizar prioridade", type: "error" });
     }
   };
 
@@ -108,7 +120,7 @@ function TicketDetail() {
           <span className={`badge badge-${status.toLowerCase().replace(" ", "-")}`}>
             {status}
           </span>
-          <span className="badge badge-alta">{ticket.priority}</span>
+          <span className="badge badge-alta">{priority}</span>
           <span className="badge badge-hardware">{ticket.category}</span>
         </div>
 
@@ -230,6 +242,38 @@ function TicketDetail() {
               </div>
             )}
 
+            {user?.role === "tech" && (
+              <div className="ticket-card">
+                <h3 className="ticket-card-title">ALTERAR PRIORIDADE</h3>
+                <div className="status-buttons">
+                  <button
+                    className={`priority-btn ${priority === "Baixa" ? "active-baixa" : ""}`}
+                    onClick={() => handlePriorityChange("Baixa")}
+                  >
+                    ● Baixa
+                  </button>
+                  <button
+                    className={`priority-btn ${priority === "Média" ? "active-media" : ""}`}
+                    onClick={() => handlePriorityChange("Média")}
+                  >
+                    ● Média
+                  </button>
+                  <button
+                    className={`priority-btn ${priority === "Alta" ? "active-alta" : ""}`}
+                    onClick={() => handlePriorityChange("Alta")}
+                  >
+                    ● Alta
+                  </button>
+                  <button
+                    className={`priority-btn ${priority === "Crítica" ? "active-critica" : ""}`}
+                    onClick={() => handlePriorityChange("Crítica")}
+                  >
+                    ● Crítica
+                  </button>
+                </div>
+              </div>
+            )}
+
             <div className="ticket-card">
               <h3 className="ticket-card-title">DETALHES</h3>
               <div className="detail-item">
@@ -238,7 +282,7 @@ function TicketDetail() {
               </div>
               <div className="detail-item">
                 <span className="info-label">Prioridade</span>
-                <span className="info-value priority-alta">{ticket.priority}</span>
+                <span className="info-value priority-alta">{priority}</span>
               </div>
               <div className="detail-item">
                 <span className="info-label">Criado em</span>

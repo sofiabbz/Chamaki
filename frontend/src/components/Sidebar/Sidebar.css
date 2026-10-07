@@ -1,5 +1,5 @@
 .sidebar {
-  background-color: #000E26;
+  background-color: var(--bg-sidebar);
   width: 220px;
   min-height: 100vh;
   padding: 24px 0;
@@ -15,7 +15,7 @@
   position: relative;
   overflow: hidden;
   padding: 0 20px 20px;
-  border-bottom: 1px solid #20304C;
+  border-bottom: 2px solid #14B8A6;
 }
 
 .sidebar-logo-img {
@@ -71,7 +71,7 @@
 }
 
 .sidebar-item.active {
-  background-color: #992802;
+  background-color: var(--color-primary);
 }
 
 .sidebar-icon {

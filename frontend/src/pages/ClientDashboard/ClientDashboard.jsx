@@ -6,6 +6,7 @@ import "./ClientDashboard.css";
 
 function ClientDashboard() {
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
   const [tickets, setTickets] = useState([]);
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
@@ -59,6 +60,16 @@ function ClientDashboard() {
           >
             + Novo Chamado
           </button>
+        </div>
+
+        <div className="client-welcome">
+          <div className="client-welcome-text">
+            <h2 className="client-welcome-name">Olá, {user?.name?.split(" ")[0]}!</h2>
+            <p className="client-welcome-summary">
+              Você tem <strong>{counters.abertos}</strong> chamado{counters.abertos !== 1 ? "s" : ""} em aberto
+              {counters.andamento > 0 && <> e <strong>{counters.andamento}</strong> em andamento</>}.
+            </p>
+          </div>
         </div>
 
         <div className="client-counters">

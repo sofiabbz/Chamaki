@@ -1,6 +1,5 @@
-/* Página inteira */
 .register-page {
-  background-color: #000E26;
+  background-color: var(--bg-body);
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -8,11 +7,10 @@
   padding: 40px;
 }
 
-/* Container do formulário */
 .register-container {
   position: relative;
   overflow: hidden;
-  background-color: #20304C;
+  background-color: var(--bg-card);
   border-radius: 16px;
   padding: 40px;
   width: 700px;
@@ -63,12 +61,11 @@
   background-color: #FFFFFF;
 }
 
-/* Botão Criar Conta */
 .register-btn {
   width: 100%;
   padding: 14px;
-  background-color: #992802;
-  color: #FFFFFF;
+  background-color: var(--color-primary);
+  color: var(--text-primary);
   border: none;
   border-radius: 6px;
   font-size: 16px;
@@ -78,7 +75,7 @@
 }
 
 .register-btn:hover {
-  background-color: #7a2002;
+  background-color: var(--color-primary-hover);
 }
 
 /* Link pro login */

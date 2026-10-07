@@ -127,11 +127,15 @@ router.get("/:id", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
-    const { status } = req.body;
+    const { status, priority } = req.body;
+
+    const data = {};
+    if (status) data.status = status;
+    if (priority) data.priority = priority;
 
     const ticket = await prisma.ticket.update({
       where: { id: parseInt(req.params.id) },
-      data: { status },
+      data,
     });
 
     res.json(ticket);

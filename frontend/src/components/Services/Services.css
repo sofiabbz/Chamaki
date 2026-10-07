@@ -1,5 +1,5 @@
 .services {
-  background-color: #000E26;
+  background-color: var(--bg-body);
   padding: 60px;
 }
 
@@ -28,7 +28,7 @@
 
 /* Card maior e mais próximo do texto */
 .services-card {
-  background-color: #992802;
+  background-color: var(--color-primary);
   border-radius: 16px;
   padding: 80px 100px;
   position: relative;
@@ -76,11 +76,11 @@
 }
 
 .service-item:hover {
-  color: #992802;
+  color: var(--color-primary);
 }
 
 .service-card {
-  background-color: #20304C;
+  background-color: var(--bg-card);
   border-radius: 10px;
   padding: 24px;
   max-width: 500px;

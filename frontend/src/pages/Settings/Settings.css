@@ -1,6 +1,6 @@
 .settings-page {
   display: flex;
-  background-color: #0A1628;
+  background-color: var(--bg-page);
   min-height: 100vh;
 }
 
@@ -24,7 +24,7 @@
 }
 
 .settings-card {
-  background-color: #20304C;
+  background-color: var(--bg-card);
   border-radius: 10px;
   padding: 60px;
   max-width: 600px;

@@ -1,0 +1,67 @@
+:root {
+  --bg-body: #0B1120;
+  --bg-page: #0F1A2E;
+  --bg-card: #1A2744;
+  --bg-input: #243350;
+  --bg-sidebar: #0B1120;
+
+  --color-primary: #8B3A2F;
+  --color-primary-hover: #6E2E25;
+  --color-primary-light: rgba(139, 58, 47, 0.15);
+
+  --text-primary: #FFFFFF;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+  --text-dim: #64748B;
+
+  --border-color: #1E3048;
+  --border-light: #2A3F5F;
+
+  --color-green: #10B981;
+  --color-yellow: #F59E0B;
+  --color-red: #EF4444;
+  --color-blue: #3B82F6;
+  --color-pink: #EC4899;
+  --color-purple: #8B5CF6;
+  --color-teal: #14B8A6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-body);
+  color: var(--text-primary);
+}
+
+.badge {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.badge-aberto {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: var(--color-green);
+}
+
+.badge-em-andamento {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: var(--color-yellow);
+}
+
+.badge-resolvido {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: var(--color-green);
+}
+
+.badge-fechado {
+  background-color: rgba(100, 116, 139, 0.15);
+  color: var(--text-dim);
+}

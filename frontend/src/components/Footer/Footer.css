@@ -1,12 +1,11 @@
 /* Rodapé inteiro */
 .footer {
-  background-color: #0A1628;
+  background-color: var(--bg-page);
   padding: 24px 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #20304C;
-  /* Linha fina separando do conteúdo acima */
+  border-top: 1px solid var(--bg-card);
 }
 
 /* Copyright */
@@ -41,7 +40,7 @@
 }
 
 .footer-icon {
-  background-color: #20304C;
+  background-color: var(--bg-card);
   color: #FFFFFF;
   width: 32px;
   height: 32px;
@@ -55,5 +54,5 @@
 }
 
 .footer-icon:hover {
-  background-color: #992802;
+  background-color: var(--color-primary);
 }

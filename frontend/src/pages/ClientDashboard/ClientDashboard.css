@@ -1,11 +1,9 @@
-/* Layout geral */
 .client-dashboard {
   display: flex;
-  background-color: #0A1628;
+  background-color: var(--bg-page);
   min-height: 100vh;
 }
 
-/* Área principal — empurrada pra direita da sidebar */
 .client-main {
   margin-left: 220px;
   padding: 30px;
@@ -33,8 +31,8 @@
 }
 
 .client-new-btn {
-  background-color: #992802;
-  color: #FFFFFF;
+  background-color: var(--color-primary);
+  color: var(--text-primary);
   border: none;
   padding: 10px 20px;
   border-radius: 6px;
@@ -44,7 +42,32 @@
 }
 
 .client-new-btn:hover {
-  background-color: #7a2002;
+  background-color: var(--color-primary-hover);
+}
+
+/* Boas-vindas */
+.client-welcome {
+  background-color: #1A2744;
+  border-radius: 10px;
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  border-left: 4px solid #8B3A2F;
+}
+
+.client-welcome-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 4px;
+}
+
+.client-welcome-summary {
+  font-size: 14px;
+  color: #94A3B8;
+}
+
+.client-welcome-summary strong {
+  color: #F59E0B;
 }
 
 /* Contadores */
@@ -56,7 +79,7 @@
 }
 
 .counter-card {
-  background-color: #20304C;
+  background-color: var(--bg-card);
   border-radius: 8px;
   padding: 20px;
 }
@@ -69,7 +92,7 @@
 
 .counter-number.green { color: #10B981; }
 .counter-number.yellow { color: #F59E0B; }
-.counter-number.red { color: #992802; }
+.counter-number.red { color: var(--color-primary); }
 
 .counter-label {
   font-size: 14px;
@@ -79,7 +102,7 @@
 
 /* Tabela */
 .client-table {
-  background-color: #20304C;
+  background-color: var(--bg-card);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -114,39 +137,11 @@
   font-family: monospace;
 }
 
-/* Badges de status */
-.badge {
-  padding: 4px 12px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.badge-aberto {
-  background-color: rgba(16, 185, 129, 0.15);
-  color: #10B981;
-}
-
-.badge-resolvido {
-  background-color: rgba(239, 68, 68, 0.15);
-  color: #EF4444;
-}
-
-.badge-andamento {
-  background-color: rgba(245, 158, 11, 0.15);
-  color: #F59E0B;
-}
-
 .table-empty {
   text-align: center;
-  color: #64748B;
+  color: var(--text-dim);
   padding: 30px;
   font-size: 14px;
-}
-
-.badge-em-andamento {
-  background-color: rgba(245, 158, 11, 0.15);
-  color: #F59E0B;
 }
 
 .filter-bar {
@@ -173,7 +168,7 @@
 }
 
 .filter-input:focus {
-  border-color: #992802;
+  border-color: var(--color-primary);
 }
 
 .filter-select {
