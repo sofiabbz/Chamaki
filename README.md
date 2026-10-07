@@ -1,35 +1,53 @@
 # Chamaki Helpdesk
 
-Sistema de helpdesk para abertura e gerenciamento de chamados técnicos. Permite que clientes abram chamados e técnicos os gerenciem, com autenticação JWT, upload de anexos e relatórios.
+Sistema de helpdesk para abertura e gerenciamento de chamados técnicos. Permite que clientes registrem solicitações de suporte e técnicos gerenciem os chamados com controle de status, prioridade, categorias e comentários — tudo com autenticação segura e upload de anexos.
 
 ## Stack Tecnológica
 
-- **Frontend:** React 19, React Router, Axios, Vite
-- **Backend:** Express 5, Prisma ORM, JWT, bcrypt, multer
-- **Banco de Dados:** PostgreSQL
+- **Frontend:** React 19, React Router 7, Axios, React Icons, Vite 8
+- **Backend:** Express 5, Prisma ORM, JWT, bcrypt, Multer
+- **Banco de Dados:** PostgreSQL (via Docker)
+
+## Funcionalidades
+
+- Cadastro e login com autenticação JWT
+- Dois perfis de acesso: **Cliente** e **Técnico** (com chave de acesso)
+- Abertura de chamados com assunto, descrição, categoria e anexo (até 5MB)
+- Auto-categorização e auto-prioridade com base no assunto selecionado
+- Técnicos podem alterar status e prioridade dos chamados
+- Sistema de comentários por chamado
+- Dashboards com contadores e filtros por status/prioridade
+- Relatórios estatísticos (técnico)
+- Perfil do usuário com CPF e telefone
+- Landing page institucional
 
 ## Pré-requisitos
 
-- Node.js 18+
-- PostgreSQL 14+
+- [Node.js](https://nodejs.org/) 18+
+- [Docker](https://www.docker.com/) (para o PostgreSQL) ou PostgreSQL 14+ local
 
-## Instalação e execução
+## Instalação e Execução
 
-### Backend
+### 1. Banco de Dados (Docker)
+
+```bash
+docker run --name chamaki-db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=chamaki -p 5433:5432 -d postgres
+```
+
+### 2. Backend
 
 ```bash
 cd backend
 npm install
 ```
 
-Crie um arquivo `.env` na pasta `backend/` com:
+Crie o arquivo `.env` na pasta `backend/`:
 
-```
-DATABASE_URL="postgresql://usuario:senha@localhost:5432/chamaki"
+```env
+DATABASE_URL="postgresql://postgres:postgres@localhost:5433/chamaki?schema=public"
 JWT_SECRET=sua-chave-secreta-aqui
+TECH_ACCESS_KEY=chave-de-acesso-para-tecnicos
 ```
-
-Execute as migrations e inicie o servidor:
 
 ```bash
 npx prisma migrate dev
@@ -38,52 +56,49 @@ npm run dev
 
 O servidor roda em `http://localhost:3000`.
 
-### Frontend
+### 3. Frontend
 
 ```bash
 cd frontend
 npm install
-```
-
-Opcionalmente, crie um arquivo `.env` na pasta `frontend/`:
-
-```
-VITE_API_URL=http://localhost:3000/api
-```
-
-Inicie o servidor de desenvolvimento:
-
-```bash
 npm run dev
 ```
+
+O frontend roda em `http://localhost:5173`.
 
 ## Variáveis de Ambiente
 
 | Variável | Local | Descrição |
 |---|---|---|
-| `DATABASE_URL` | backend/.env | URL de conexão com o PostgreSQL |
-| `JWT_SECRET` | backend/.env | Chave secreta para assinatura dos tokens JWT |
-| `VITE_API_URL` | frontend/.env | URL base da API (padrão: http://localhost:3000/api) |
+| `DATABASE_URL` | `backend/.env` | URL de conexão com o PostgreSQL |
+| `JWT_SECRET` | `backend/.env` | Chave secreta para assinatura dos tokens JWT |
+| `TECH_ACCESS_KEY` | `backend/.env` | Chave de acesso para registro de técnicos |
+| `VITE_API_URL` | `frontend/.env` | URL base da API (padrão: `http://localhost:3000/api`) |
 
 ## Estrutura de Pastas
 
 ```
 ChamakiHelpdesk/
 ├── backend/
-│   ├── prisma/           # Schema e migrations do banco
+│   ├── prisma/              # Schema e migrations
 │   ├── src/
-│   │   ├── lib/          # PrismaClient centralizado
-│   │   ├── middleware/    # Auth JWT, upload multer
-│   │   ├── routes/       # Rotas de usuário e tickets
-│   │   └── server.js     # Entrada do servidor Express
-│   └── uploads/          # Arquivos anexados aos chamados
+│   │   ├── lib/             # PrismaClient centralizado
+│   │   ├── middleware/      # Auth JWT, upload Multer
+│   │   ├── routes/          # Rotas (users, tickets)
+│   │   └── server.js
+│   └── uploads/             # Anexos dos chamados
 ├── frontend/
-│   ├── public/           # Ícones e assets estáticos
+│   ├── public/
 │   └── src/
-│       ├── assets/       # Imagens e logos
-│       ├── components/   # Sidebar, Toast, ProtectedRoute, etc.
-│       ├── pages/        # Páginas da aplicação
-│       ├── services/     # Instância centralizada do axios
-│       └── utils/        # Máscaras de input (CPF, telefone)
+│       ├── assets/          # Imagens e logos
+│       ├── components/      # Sidebar, Navbar, Toast, ProtectedRoute
+│       ├── pages/           # Páginas da aplicação
+│       ├── services/        # Instância Axios
+│       ├── styles/          # CSS global e variáveis de cores
+│       └── utils/           # Máscaras de input (CPF, telefone)
 └── README.md
 ```
+
+## Licença
+
+Este projeto é de uso acadêmico/educacional.
