@@ -13,6 +13,7 @@ import {
 } from "react-icons/md";
 import logo from "../../assets/logo-chamaki.png";
 import logoTec from "../../assets/logo-tec.png";
+import estrela from "../../assets/estrela.png";
 import "./Sidebar.css";
 
 function Sidebar({ type }) {
@@ -46,6 +47,7 @@ function Sidebar({ type }) {
             alt="Chamaki"
             className="sidebar-logo-img"
           />
+          <img src={estrela} alt="" className="sidebar-star" />
           <button className="sidebar-close" onClick={() => setMobileOpen(false)}>
             <MdClose />
           </button>

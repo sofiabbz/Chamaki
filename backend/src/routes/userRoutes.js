@@ -40,6 +40,7 @@ router.post("/cadastro", async (req, res) => {
     if (error.code === "P2002") {
       return res.status(400).json({ error: "E-mail ou CPF já cadastrado" });
     }
+    console.error("Erro no cadastro:", error);
     res.status(400).json({ error: "Erro ao cadastrar usuário" });
   }
 });
@@ -73,7 +74,7 @@ router.post("/login", async (req, res) => {
 
     res.json({
       token,
-      user: { id: user.id, name: user.name, email: user.email, role: user.role },
+      user: { id: user.id, name: user.name, email: user.email, role: user.role, cpf: user.cpf, phone: user.phone },
     });
   } catch (error) {
     res.status(400).json({ error: "Erro ao fazer login" });

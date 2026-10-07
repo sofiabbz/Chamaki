@@ -1,74 +1,84 @@
-/* Seção inteira */
 .how-it-works {
   position: relative;
   overflow: hidden;
   background-color: var(--color-primary);
-  padding: 60px;
+  padding: 70px 80px;
   border-radius: 20px;
-  margin: 0 40px;
+  margin: 20px 60px;
 }
 
-/* Título */
 .how-title {
   text-align: center;
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
   color: #FFFFFF;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 }
 
-/* Container dos 3 passos */
 .how-steps {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-
+  gap: 24px;
 }
 
-/* Cada card de passo */
 .how-step {
   background-color: var(--bg-card);
   border-radius: 12px;
-  padding: 30px;
-  width: 260px;
-  min-height: 200px;
+  padding: 32px;
+  width: 280px;
+  min-height: 220px;
 }
 
-/* Número grande */
 .how-number {
-  font-size: 36px;
+  font-size: 40px;
   font-weight: 700;
   color: #FFFFFF;
 }
 
-/* Título do passo */
 .how-step h3 {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
   color: #FFFFFF;
-  margin: 10px 0;
+  margin: 12px 0;
 }
 
-/* Descrição do passo */
 .how-step p {
-  font-size: 13px;
-  color: #94A3B8;
-  line-height: 1.6;
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
 }
 
-/* Seta entre os passos */
 .how-arrow {
-  font-size: 24px;
+  font-size: 28px;
   color: #FFFFFF;
 }
 
 .how-star {
-  width: 350px;
+  width: 380px;
   position: absolute;
   top: -60px;
   right: -40px;
   filter: brightness(0) saturate(100%) invert(5%) sepia(50%) saturate(3000%) hue-rotate(200deg);
   opacity: 0.4;
   pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .how-it-works {
+    padding: 40px 20px;
+    margin: 20px;
+  }
+
+  .how-steps {
+    flex-direction: column;
+  }
+
+  .how-step {
+    width: 100%;
+  }
+
+  .how-arrow {
+    transform: rotate(90deg);
+  }
 }

@@ -1,78 +1,72 @@
-/* Seção inteira */
 .contact {
   position: relative;
   overflow: hidden;
   background-color: var(--bg-body);
-  padding: 60px;
+  padding: 80px;
   text-align: center;
 }
 
-/* Título */
 .contact-title {
-  font-size: 26px;
+  font-size: 30px;
   font-weight: 700;
   color: #FFFFFF;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
   line-height: 1.4;
 }
 
-/* Container dos dois blocos */
 .contact-content {
   display: flex;
   justify-content: center;
   gap: 40px;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 }
 
-/* Lado esquerdo — frase */
 .contact-phrase {
   background-color: var(--bg-card);
   border-radius: 12px;
-  padding: 30px;
-  max-width: 300px;
+  padding: 36px;
+  max-width: 340px;
   display: flex;
   align-items: center;
 }
 
 .contact-phrase p {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
   color: #FFFFFF;
-  line-height: 1.5;
+  line-height: 1.6;
   text-align: center;
 }
 
-/* Lado direito — informações */
 .contact-info {
   background-color: var(--bg-card);
   border-radius: 12px;
-  padding: 30px;
-  max-width: 300px;
+  padding: 36px;
+  max-width: 340px;
   text-align: left;
 }
 
 .contact-info h3 {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
   color: #FFFFFF;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .contact-info p {
-  font-size: 14px;
-  color: #94A3B8;
+  font-size: 15px;
+  color: var(--text-muted);
   margin-bottom: 8px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
-/* Botão */
 .contact-btn {
   background-color: var(--color-primary);
   color: var(--text-primary);
   border: none;
-  padding: 14px 36px;
+  padding: 16px 40px;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -89,4 +83,20 @@
   filter: brightness(0) saturate(100%) invert(5%) sepia(50%) saturate(3000%) hue-rotate(200deg);
   opacity: 0.4;
   pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .contact {
+    padding: 40px 20px;
+  }
+
+  .contact-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contact-phrase,
+  .contact-info {
+    max-width: 100%;
+  }
 }
