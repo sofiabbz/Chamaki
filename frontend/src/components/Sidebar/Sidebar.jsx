@@ -13,7 +13,6 @@ import {
 } from "react-icons/md";
 import logo from "../../assets/logo-chamaki.png";
 import logoTec from "../../assets/logo-tec.png";
-import estrela from "../../assets/estrela.png";
 import "./Sidebar.css";
 
 function Sidebar({ type }) {
@@ -47,7 +46,6 @@ function Sidebar({ type }) {
             alt="Chamaki"
             className="sidebar-logo-img"
           />
-          <img src={estrela} alt="" className="sidebar-star" />
           <button className="sidebar-close" onClick={() => setMobileOpen(false)}>
             <MdClose />
           </button>
@@ -72,6 +70,9 @@ function Sidebar({ type }) {
               </Link>
               <Link to="/relatorios" className={`sidebar-item ${isActive("/relatorios") ? "active" : ""}`} onClick={() => setMobileOpen(false)}>
                 <MdBarChart className="sidebar-icon" /> Relatórios
+              </Link>
+              <Link to="/perfil" className={`sidebar-item ${isActive("/perfil") ? "active" : ""}`} onClick={() => setMobileOpen(false)}>
+                <MdPerson className="sidebar-icon" /> Meu Perfil
               </Link>
               <Link to="/configuracoes" className={`sidebar-item ${isActive("/configuracoes") ? "active" : ""}`} onClick={() => setMobileOpen(false)}>
                 <MdSettings className="sidebar-icon" /> Configurações
