@@ -35,6 +35,20 @@ const SUBJECT_PRIORITY = {
   "Outro": "Média",
 };
 
+const SUBJECT_CATEGORY = {
+  "Instalação de software": "Software",
+  "Atualização de software": "Software",
+  "Equipamento defeituoso": "Hardware",
+  "Computador não liga": "Hardware",
+  "Computador lento": "Hardware",
+  "Problema com impressora": "Hardware",
+  "Problema de rede / internet": "Rede",
+  "Acesso a sistema / permissões": "Acesso / Permissões",
+  "Configuração de e-mail": "Software",
+  "Recuperação de dados": "Software",
+  "Troca de equipamento": "Hardware",
+};
+
 function NewTicket() {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
@@ -54,7 +68,15 @@ function NewTicket() {
   const [toast, setToast] = useState(null);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    if (name === "title") {
+      const autoCategory = SUBJECT_CATEGORY[value] || "";
+      setFormData({ ...formData, title: value, category: autoCategory });
+      return;
+    }
+
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleFileChange = (e) => {
