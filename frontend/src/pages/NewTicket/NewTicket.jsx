@@ -5,9 +5,26 @@ import Toast from "../../components/Toast/Toast";
 import api from "../../services/api";
 import "./NewTicket.css";
 
+const SUBJECTS = [
+  "Instalação de software",
+  "Atualização de software",
+  "Equipamento defeituoso",
+  "Computador não liga",
+  "Computador lento",
+  "Problema com impressora",
+  "Problema de rede / internet",
+  "Acesso a sistema / permissões",
+  "Configuração de e-mail",
+  "Recuperação de dados",
+  "Troca de equipamento",
+  "Outro",
+];
+
 function NewTicket() {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isTech = user?.role === "tech";
 
   const [formData, setFormData] = useState({
     title: "",
@@ -17,6 +34,7 @@ function NewTicket() {
   });
 
   const [file, setFile] = useState(null);
+  const [customTitle, setCustomTitle] = useState("");
   const [error, setError] = useState("");
   const [toast, setToast] = useState(null);
 
@@ -44,16 +62,28 @@ function NewTicket() {
   };
 
   const handleSubmit = async () => {
-    if (!formData.title || !formData.category || !formData.priority || !formData.description) {
-      setError("Preencha todos os campos!");
+    const finalTitle = formData.title === "Outro" ? customTitle : formData.title;
+
+    if (!finalTitle || !formData.category || !formData.description) {
+      setError("Preencha todos os campos obrigatórios!");
+      return;
+    }
+
+    if (formData.title === "Outro" && !customTitle.trim()) {
+      setError("Descreva o assunto do chamado!");
+      return;
+    }
+
+    if (isTech && !formData.priority) {
+      setError("Selecione a prioridade!");
       return;
     }
 
     try {
       const data = new FormData();
-      data.append("title", formData.title);
+      data.append("title", finalTitle);
       data.append("category", formData.category);
-      data.append("priority", formData.priority);
+      data.append("priority", isTech ? formData.priority : "Média");
       data.append("description", formData.description);
       if (file) {
         data.append("attachment", file);
@@ -66,7 +96,7 @@ function NewTicket() {
       setToast({ message: "Chamado criado com sucesso!", type: "success" });
 
       setTimeout(() => {
-        navigate("/dashboard");
+        navigate(isTech ? "/dashboard-tecnico" : "/dashboard");
       }, 2000);
     } catch (err) {
       setToast({ message: "Erro ao criar chamado.", type: "error" });
@@ -75,7 +105,7 @@ function NewTicket() {
 
   return (
     <div className="new-ticket">
-      <Sidebar type="client" />
+      <Sidebar type={isTech ? "tech" : "client"} />
 
       {toast && (
         <Toast
@@ -86,15 +116,31 @@ function NewTicket() {
       )}
 
       <main className="new-ticket-main">
-        <h1 className="new-ticket-title">Título do chamado</h1>
-        <input
-          type="text"
+        <h1 className="new-ticket-title">Assunto do chamado</h1>
+        <select
           name="title"
-          className="new-ticket-input"
-          placeholder="Ex: Computador não liga após queda de energia"
+          className="new-ticket-select"
           value={formData.title}
           onChange={handleChange}
-        />
+        >
+          <option value="">Selecione o assunto</option>
+          {SUBJECTS.map((subject) => (
+            <option key={subject} value={subject}>{subject}</option>
+          ))}
+        </select>
+
+        {formData.title === "Outro" && (
+          <>
+            <label className="new-ticket-label">Descreva o assunto</label>
+            <input
+              type="text"
+              className="new-ticket-input"
+              placeholder="Ex: Problema com projetor da sala de reuniões"
+              value={customTitle}
+              onChange={(e) => setCustomTitle(e.target.value)}
+            />
+          </>
+        )}
 
         <div className="new-ticket-grid">
           <div>
@@ -113,21 +159,23 @@ function NewTicket() {
             </select>
           </div>
 
-          <div>
-            <label className="new-ticket-label">Prioridade</label>
-            <select
-              name="priority"
-              className="new-ticket-select"
-              value={formData.priority}
-              onChange={handleChange}
-            >
-              <option value="">Selecione a prioridade</option>
-              <option value="Baixa">Baixa</option>
-              <option value="Média">Média</option>
-              <option value="Alta">Alta</option>
-              <option value="Crítica">Crítica</option>
-            </select>
-          </div>
+          {isTech && (
+            <div>
+              <label className="new-ticket-label">Prioridade</label>
+              <select
+                name="priority"
+                className="new-ticket-select"
+                value={formData.priority}
+                onChange={handleChange}
+              >
+                <option value="">Selecione a prioridade</option>
+                <option value="Baixa">Baixa</option>
+                <option value="Média">Média</option>
+                <option value="Alta">Alta</option>
+                <option value="Crítica">Crítica</option>
+              </select>
+            </div>
+          )}
         </div>
 
         <label className="new-ticket-label">Descrição do problema</label>
