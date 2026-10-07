@@ -156,6 +156,28 @@
   font-size: 13px;
   font-weight: 600;
   color: #E2E8F0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.comment-role {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.comment-role-tech {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #3B82F6;
+}
+
+.comment-role-client {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #10B981;
 }
 
 .comment-time {

@@ -168,7 +168,12 @@ function TicketDetail() {
                 {ticket.comments?.map((comment) => (
                   <div className="comment-item" key={comment.id}>
                     <div className="comment-header">
-                      <span className="comment-author">{comment.user?.name}</span>
+                      <span className="comment-author">
+                        {comment.user?.name}
+                        <span className={`comment-role ${comment.user?.role === "tech" ? "comment-role-tech" : "comment-role-client"}`}>
+                          {comment.user?.role === "tech" ? "Técnico" : "Cliente"}
+                        </span>
+                      </span>
                       <span className="comment-time">{formatDate(comment.createdAt)}</span>
                     </div>
                     <p className="comment-text">{comment.text}</p>
@@ -193,35 +198,37 @@ function TicketDetail() {
           </div>
 
           <div className="ticket-right">
-            <div className="ticket-card">
-              <h3 className="ticket-card-title">ALTERAR STATUS</h3>
-              <div className="status-buttons">
-                <button
-                  className={`status-btn ${status === "Aberto" ? "active" : ""}`}
-                  onClick={() => handleStatusChange("Aberto")}
-                >
-                  ● Aberto
-                </button>
-                <button
-                  className={`status-btn ${status === "Em andamento" ? "active" : ""}`}
-                  onClick={() => handleStatusChange("Em andamento")}
-                >
-                  ● Em andamento
-                </button>
-                <button
-                  className={`status-btn ${status === "Resolvido" ? "active" : ""}`}
-                  onClick={() => handleStatusChange("Resolvido")}
-                >
-                  ● Resolvido
-                </button>
-                <button
-                  className={`status-btn ${status === "Fechado" ? "active" : ""}`}
-                  onClick={() => handleStatusChange("Fechado")}
-                >
-                  ○ Fechado
-                </button>
+            {user?.role === "tech" && (
+              <div className="ticket-card">
+                <h3 className="ticket-card-title">ALTERAR STATUS</h3>
+                <div className="status-buttons">
+                  <button
+                    className={`status-btn ${status === "Aberto" ? "active" : ""}`}
+                    onClick={() => handleStatusChange("Aberto")}
+                  >
+                    ● Aberto
+                  </button>
+                  <button
+                    className={`status-btn ${status === "Em andamento" ? "active" : ""}`}
+                    onClick={() => handleStatusChange("Em andamento")}
+                  >
+                    ● Em andamento
+                  </button>
+                  <button
+                    className={`status-btn ${status === "Resolvido" ? "active" : ""}`}
+                    onClick={() => handleStatusChange("Resolvido")}
+                  >
+                    ● Resolvido
+                  </button>
+                  <button
+                    className={`status-btn ${status === "Fechado" ? "active" : ""}`}
+                    onClick={() => handleStatusChange("Fechado")}
+                  >
+                    ○ Fechado
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="ticket-card">
               <h3 className="ticket-card-title">DETALHES</h3>

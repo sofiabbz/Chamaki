@@ -20,6 +20,21 @@ const SUBJECTS = [
   "Outro",
 ];
 
+const SUBJECT_PRIORITY = {
+  "Computador não liga": "Crítica",
+  "Equipamento defeituoso": "Crítica",
+  "Problema de rede / internet": "Alta",
+  "Acesso a sistema / permissões": "Alta",
+  "Recuperação de dados": "Alta",
+  "Computador lento": "Média",
+  "Problema com impressora": "Média",
+  "Troca de equipamento": "Média",
+  "Instalação de software": "Baixa",
+  "Atualização de software": "Baixa",
+  "Configuração de e-mail": "Baixa",
+  "Outro": "Média",
+};
+
 function NewTicket() {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
@@ -83,7 +98,7 @@ function NewTicket() {
       const data = new FormData();
       data.append("title", finalTitle);
       data.append("category", formData.category);
-      data.append("priority", isTech ? formData.priority : "Média");
+      data.append("priority", isTech ? formData.priority : (SUBJECT_PRIORITY[formData.title] || "Média"));
       data.append("description", formData.description);
       if (file) {
         data.append("attachment", file);
